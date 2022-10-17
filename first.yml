@@ -1,0 +1,13 @@
+---
+  - name: "My first play"
+    hosts: localhost
+
+    tasks:
+
+      - name: "test reachability"
+        ping:
+
+      - name: "install stress"
+        apt:
+          name: stress
+          state: present
