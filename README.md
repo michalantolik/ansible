@@ -42,6 +42,7 @@
 - See docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
 
 ## Ansible - First playbook
+**first.yml**
 ```yml
 ---
   - name: "My first play"
@@ -57,8 +58,12 @@
           name: stress
           state: present
 ```
+```bash
+ansible-playbook first.yml -v
+```
 
 ## Ansible - Second playbook
+**second.yml**
 ```yml
 ---
   - name: "Some name"
@@ -73,4 +78,48 @@
         find:
           paths: ~/
           file_type: directory
+```
+```bash
+ansible-playbook second.yml -v
+```
+## Ansible - Third playbook
+
+- [How To Set Up Ansible Inventories](https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories)
+
+Create custom **inventory** file
+```
+[logicservers]
+server1 ansible_host=127.0.0.1 ansible_connection=local deprecation_warnings=false
+server2 ansible_host=127.0.0.2 ansible_connection=local INTERPRETER_PYTHON=auto_silent
+server3 ansible_host=127.0.0.3 ansible_connection=local
+server4 ansible_host=127.0.0.4 ansible_connection=local
+```
+Make sure that custom **inventory** file is OK
+```bash
+ansible-inventory -i inventory --list
+```
+Create **third.yml** file
+```yml
+---
+  - name: "Orchestration Example"
+    hosts: logicservers
+    serial: 1
+
+    tasks:
+
+      - name: "Shutdown Server"
+        debug:
+          msg: "Shutdown {{ inventory_hostname }}"
+
+      - name: "Upgrade Firmware"
+        debug:
+          msg: "Upgrade {{ inventory_hostname }}"
+
+      - name: "Start Server"
+        debug:
+          msg: "Start {{ inventory_hostname }}"
+```
+Run **third.yml** playbook with a custom inventory file
+```bash
+ansible-playbook -i -inventory third.yml -v
 ```
