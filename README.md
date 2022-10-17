@@ -40,3 +40,37 @@
 
 ## Ansible - Installation
 - See docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
+
+## Ansible - First playbook
+```yml
+---
+  - name: "My first play"
+    hosts: localhost
+
+    tasks:
+
+      - name: "test reachability"
+        ping:
+
+      - name: "install stress"
+        apt:
+          name: stress
+          state: present
+```
+
+## Ansible - Second playbook
+```yml
+---
+  - name: "Some name"
+    hosts: localhost
+
+    tasks:
+
+      - name: "teach reachability"
+        ping:
+
+      - name: "find module"
+        find:
+          paths: ~/
+          file_type: directory
+```
