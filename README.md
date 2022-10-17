@@ -41,7 +41,7 @@
 ## Ansible - Installation
 - See docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
 
-## Ansible - First playbook
+## Ansible - First playbook - Localhost
 **first.yml**
 ```yml
 ---
@@ -62,7 +62,7 @@
 ansible-playbook first.yml -v
 ```
 
-## Ansible - Second playbook
+## Ansible - Second playbook - Localhost
 **second.yml**
 ```yml
 ---
@@ -82,7 +82,7 @@ ansible-playbook first.yml -v
 ```bash
 ansible-playbook second.yml -v
 ```
-## Ansible - Third playbook
+## Ansible - Third playbook - Orchestration
 
 - [How To Set Up Ansible Inventories](https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories)
 
@@ -122,4 +122,110 @@ Create **third.yml** file
 Run **third.yml** playbook with a custom inventory file
 ```bash
 ansible-playbook -i -inventory third.yml -v
+```
+
+## Ansible - Fourth playbook - Change Handler
+
+- [How To Set Up Ansible Inventories](https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories)
+
+Create custom **inventory** file
+```
+[logicservers]
+server1 ansible_host=127.0.0.1 ansible_connection=local deprecation_warnings=false
+server2 ansible_host=127.0.0.2 ansible_connection=local INTERPRETER_PYTHON=auto_silent
+server3 ansible_host=127.0.0.3 ansible_connection=local
+server4 ansible_host=127.0.0.4 ansible_connection=local
+```
+Make sure that custom **inventory** file is OK
+```bash
+ansible-inventory -i inventory --list
+```
+Create **fourth.yml** file
+```yml
+---
+  - name: "React with Change Example - with a Change Handler"
+    hosts: logicservers
+    serial: 1
+
+    tasks:
+
+      - name: "Install nginx"
+        debug:
+          msg: "Install nginx on {{ inventory_hostname }}"
+
+      - name: "Upgrade nginx"
+        debug:
+          msg: "Upgrade nginx on {{ inventory_hostname }}"
+
+      - name: "Configure nginx"
+        debug:
+          msg: "Configure nginx on {{ inventory_hostname }}"
+        notify: restart nginx
+        changed_when: True
+
+      - name: "Verify nginx"
+        debug:
+          msg: "Verify nginx on {{ inventory_hostname }}"
+
+    handlers:
+    - name: restart nginx
+      debug:
+        msg: "CALLED HANDLER FOR RESTART"
+```
+Run **fourth.yml** playbook with a custom inventory file
+```bash
+ansible-playbook -i -inventory fourth.yml -v
+```
+
+## Ansible - Fifth playbook - Free Strategy and Forks
+
+- [How To Set Up Ansible Inventories](https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories)
+
+Create custom **inventory** file
+```
+[logicservers]
+server1 ansible_host=127.0.0.1 ansible_connection=local deprecation_warnings=false
+server2 ansible_host=127.0.0.2 ansible_connection=local INTERPRETER_PYTHON=auto_silent
+server3 ansible_host=127.0.0.3 ansible_connection=local
+server4 ansible_host=127.0.0.4 ansible_connection=local
+```
+Make sure that custom **inventory** file is OK
+```bash
+ansible-inventory -i inventory --list
+```
+Create **fifth.yml** file
+```yml
+---
+  - name: "Free Strategy and Forks"
+    hosts: logicservers
+    strategy: free
+
+    tasks:
+
+      - name: "Install nginx"
+        debug:
+          msg: "Install nginx on {{ inventory_hostname }}"
+
+      - name: "Upgrade nginx"
+        debug:
+          msg: "Upgrade nginx on {{ inventory_hostname }}"
+
+      - name: "Configure nginx"
+        debug:
+          msg: "Configure nginx on {{ inventory_hostname }}"
+        notify: restart nginx
+        changed_when: True
+
+      - name: "Verify nginx"
+        debug:
+          msg: "Verify nginx on {{ inventory_hostname }}"
+
+    handlers:
+    - name: restart nginx
+      debug:
+        msg: "CALLED HANDLER FOR RESTART"
+```
+Run **fifth.yml** playbook with a custom inventory file
+```bash
+ansible-playbook -i -inventory fifth.yml -v -f 4
 ```
