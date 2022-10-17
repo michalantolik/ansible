@@ -180,6 +180,7 @@ ansible-playbook -i -inventory fourth.yml -v
 ## Ansible - Fifth playbook - Free Strategy and Forks
 
 - [How To Set Up Ansible Inventories](https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories)
+- [Controlling playbook execution: strategies and more](https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html)
 
 Create custom **inventory** file
 ```
