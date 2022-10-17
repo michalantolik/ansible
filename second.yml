@@ -1,0 +1,13 @@
+---
+  - name: "Some name"
+    hosts: localhost
+
+    tasks:
+
+      - name: "teach reachability"
+        ping:
+
+      - name: "find module"
+        find:
+          paths: ~/
+          file_type: directory
