@@ -44,7 +44,35 @@
   - ... often a complicated ordering with dependencies
 
 ## Ansible - Installation
-- See docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
+- Install Ansible --> see docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
+- Install Python3 --> required for running Ansible
+- Check Ansible installation --> `ansible --version`
+- Test Ansible --> `ansible localhost -m ping`
+
+## Ansible - Inventory file
+- List the hosts (machines) that you will be managing with Ansible
+- https://docs.ansible.com/ansible/2.3/intro_inventory.html
+
+## Ansible - Variables
+- Variables can be used in many places
+  - e.g. in Inventory file --> each host can define its own set of the same variables (each with different values)
+  
+```
+[targets]
+
+localhost              ansible_connection=local
+other1.example.com     ansible_connection=ssh        ansible_user=myuser
+other2.example.com     ansible_connection=ssh        ansible_user=myotheruser
+```
+
+## Ansible - Modules
+- [Ansible Docs - Module Index](https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html)
+- [Ansible Galaxy Modules](https://galaxy.ansible.com/)
+
+## Ansible - Files.find module
+```
+ansible localhost -m find -a "paths=Downloads file_type=file"
+```
 
 ## Ansible - First playbook - Localhost
 **first.yml**
