@@ -38,6 +38,11 @@
 - Manual management (by hand)
 - Server tools development
 
+## Ansible - Automation VS Orchestration
+- **Automation** --> refers to a single task
+- **Orchestration** --> refers to management of many automated tasks
+  - ... often a complicated ordering with dependencies
+
 ## Ansible - Installation
 - See docs: https://docs.ansible.com/ansible-core/devel/installation_guide/index.html
 
